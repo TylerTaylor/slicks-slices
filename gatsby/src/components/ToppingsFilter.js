@@ -16,6 +16,7 @@ const ToppingsStyles = styled.div`
     padding: 5px;
     background: var(--grey);
     border-radius: 2px;
+    font-size: clamp(1.5rem, 1.4vw, 2.5rem);
     .count {
       background: white;
       padding: 2px 5px;
@@ -83,7 +84,7 @@ export default function ToppingsFilter({ activeTopping }) {
   // Count how many pizzas are in each topping\
   console.clear();
   const toppingsWithCounts = countPizzasInToppings(pizzas.nodes);
-  console.log(toppingsWithCounts);
+
   // Loop over list of toppings and display the topping and the count of pizzas with that topping
   // Link it up blah blah
   return (

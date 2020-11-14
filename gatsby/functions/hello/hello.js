@@ -1,8 +1,8 @@
 // aws lambda
 exports.handler = async (event, context) => {
-  console.log(event)
+  console.log(event);
   return {
     statusCode: 200,
-    body: 'Hello!!!1'
-  }
-}
+    body: 'Hello!!!1',
+  };
+};

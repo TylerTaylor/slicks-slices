@@ -16,7 +16,7 @@ const PaginationStyles = styled.div`
     flex: 1;
     border-right: 1px solid var(--grey);
     text-decoration: none;
-    &[aria-current], 
+    &[aria-current],
     &.current {
       color: var(--red);
     }
@@ -25,6 +25,12 @@ const PaginationStyles = styled.div`
       color: var(--grey);
     }
   }
+  @media (max-width: 800px) {
+    .word {
+      display: none;
+    }
+    font-size: 1.4rem;
+  }
 `;
 
 export default function Pagination({
@@ -32,7 +38,7 @@ export default function Pagination({
   totalCount,
   currentPage,
   skip,
-  base
+  base,
 }) {
   const totalPages = Math.ceil(totalCount / pageSize);
   const prevPage = currentPage - 1;
@@ -42,18 +48,29 @@ export default function Pagination({
 
   return (
     <PaginationStyles>
-      <Link to={`${base}/${prevPage}`} disabled={!hasPrevPage}>
-        &#8592; Prev
+      <Link
+        title="Prev Page"
+        to={`${base}/${prevPage}`}
+        disabled={!hasPrevPage}
+      >
+        &#8592; <span className="word">Prev</span>
       </Link>
       {Array.from({ length: totalPages }).map((_, i) => (
-        <Link 
-          className={currentPage === 1 && i === 0 ? 'current' : ''} 
-          to={`${base}/${i > 0 ? i + 1 : ''}`}>{i + 1}
+        <Link
+          className={currentPage === 1 && i === 0 ? 'current' : ''}
+          to={`${base}/${i > 0 ? i + 1 : ''}`}
+          key={`page-${i}`}
+        >
+          {i + 1}
         </Link>
       ))}
-      <Link to={`${base}/${nextPage}`} disabled={!hasNextPage}>
-        Next &#8594;
+      <Link
+        title="Next Page"
+        to={`${base}/${nextPage}`}
+        disabled={!hasNextPage}
+      >
+        <span className="word">Next</span> &#8594;
       </Link>
     </PaginationStyles>
-  )
+  );
 }

@@ -16,7 +16,7 @@ async function turnPizzasIntoPages({ graphql, actions }) {
         }
       }
     }
-  `)
+  `);
   // 3. Loop over each pizza to create a page for that pizza
   data.pizzas.nodes.forEach((pizza) => {
     actions.createPage({
@@ -24,10 +24,10 @@ async function turnPizzasIntoPages({ graphql, actions }) {
       path: `pizza/${pizza.slug.current}`,
       component: pizzaTemplate,
       context: {
-        slug: pizza.slug.current
-      }
-    })
-  })
+        slug: pizza.slug.current,
+      },
+    });
+  });
 }
 
 async function turnToppingsIntoPages({ graphql, actions }) {
@@ -43,25 +43,29 @@ async function turnToppingsIntoPages({ graphql, actions }) {
         }
       }
     }
-  `)
+  `);
   // 3. createPage for that topping
-  data.toppings.nodes.forEach(topping => {
+  data.toppings.nodes.forEach((topping) => {
     actions.createPage({
       path: `topping/${topping.name}`,
       component: toppingsTemplate,
       context: {
         topping: topping.name,
         // TODO regex for topping
-      }
-    })
-  })
+      },
+    });
+  });
   // 4. Pass topping data to pizza.js
 }
 
-async function fetchBeersAndTurnIntoNodes({ actions, createNodeId, createContentDigest }) {
+async function fetchBeersAndTurnIntoNodes({
+  actions,
+  createNodeId,
+  createContentDigest,
+}) {
   // 1. Fetch a list of beers
-  const res = await fetch('https://sampleapis.com/beers/api/ale')
-  const beers = await res.json()
+  const res = await fetch('https://sampleapis.com/beers/api/ale');
+  const beers = await res.json();
   // 2. Loop over each beer
   for (const beer of beers) {
     // create a node for each beer
@@ -72,14 +76,14 @@ async function fetchBeersAndTurnIntoNodes({ actions, createNodeId, createContent
       internal: {
         type: 'Beer',
         mediaType: 'application/json',
-        contentDigest: createContentDigest(beer)
-      }
-    }
+        contentDigest: createContentDigest(beer),
+      },
+    };
     // 3. Create a node for that beer
     actions.createNode({
       ...beer,
-      ...nodeMeta
-    })
+      ...nodeMeta,
+    });
   }
 }
 
@@ -101,16 +105,16 @@ async function turnSlicemastersIntoPages({ graphql, actions }) {
   `);
 
   // 2. Turn each slicemaster into their own page
-  data.slicemasters.nodes.forEach(slicemaster => {
+  data.slicemasters.nodes.forEach((slicemaster) => {
     actions.createPage({
       component: path.resolve('./src/templates/Slicemaster.js'),
       path: `/slicemaster/${slicemaster.slug.current}`,
       context: {
         name: slicemaster.person,
-        slug: slicemaster.slug.current
-      }
-    })
-  })
+        slug: slicemaster.slug.current,
+      },
+    });
+  });
 
   // 3. Figure out how many pages there are based on how many slicemasters there are, and how many per page
   const pageSize = parseInt(process.env.GATSBY_PAGE_SIZE);
@@ -126,16 +130,14 @@ async function turnSlicemastersIntoPages({ graphql, actions }) {
         skip: i * pageSize,
         currentPage: i + 1,
         pageSize,
-      }
-    })
-  })
+      },
+    });
+  });
 }
 
 export async function sourceNodes(params) {
-  // fetch list of beers and source them into our gatsby API 
-  await Promise.all([
-    fetchBeersAndTurnIntoNodes(params)
-  ])
+  // fetch list of beers and source them into our gatsby API
+  await Promise.all([fetchBeersAndTurnIntoNodes(params)]);
 }
 
 export async function createPages(params) {
@@ -145,9 +147,9 @@ export async function createPages(params) {
   await Promise.all([
     turnPizzasIntoPages(params),
     turnToppingsIntoPages(params),
-    turnSlicemastersIntoPages(params)
-  ])
-  
+    turnSlicemastersIntoPages(params),
+  ]);
+
   // 1. Pizzas
   // 2. Toppings
   // 3. Slicemasters

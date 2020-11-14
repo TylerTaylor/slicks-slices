@@ -1,6 +1,6 @@
 import { graphql, Link } from 'gatsby';
-import Img from 'gatsby-image'
-import React from 'react'
+import Img from 'gatsby-image';
+import React from 'react';
 import styled from 'styled-components';
 import Pagination from '../components/Pagination';
 import SEO from '../components/SEO';
@@ -39,36 +39,32 @@ const SlicemasterStyles = styled.div`
 `;
 
 export default function SlicemastersPage({ data, pageContext }) {
-  const slicemasters = data.slicemasters.nodes
+  const slicemasters = data.slicemasters.nodes;
   return (
     <>
-      <SEO
-        title={`Slicemasters - Page ${pageContext.currentPage || 1}`}
-      />
-      <Pagination 
-        pageSize={parseInt(process.env.GATSBY_PAGE_SIZE)} 
-        totalCount= {data.slicemasters.totalCount}
-        currentPage={pageContext.currentPage || 1} 
+      <SEO title={`Slicemasters - Page ${pageContext.currentPage || 1}`} />
+      <Pagination
+        pageSize={parseInt(process.env.GATSBY_PAGE_SIZE)}
+        totalCount={data.slicemasters.totalCount}
+        currentPage={pageContext.currentPage || 1}
         skip={pageContext.skip}
-        base="/slicemasters"  
+        base="/slicemasters"
       />
       <SlicemasterGrid>
-        {slicemasters.map(person => (
-          <SlicemasterStyles>
+        {slicemasters.map((person) => (
+          <SlicemasterStyles key={person.id}>
             <Link to={`/slicemaster/${person.slug.current}`}>
               <h2>
                 <span className="mark">{person.name}</span>
               </h2>
             </Link>
-            <Img fluid={person.image.asset.fluid}/>
-            <p className="description">
-              {person.description}
-            </p>
+            <Img fluid={person.image.asset.fluid} />
+            <p className="description">{person.description}</p>
           </SlicemasterStyles>
         ))}
       </SlicemasterGrid>
     </>
-  )
+  );
 }
 
 export const query = graphql`
